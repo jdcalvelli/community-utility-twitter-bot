@@ -1,0 +1,27 @@
+{
+  "name": "community-utility-twitter-bot",
+  "version": "1.0.0",
+  "description": "do later",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jdcalvelli/community-utility-twitter-bot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jdcalvelli/community-utility-twitter-bot/issues"
+  },
+  "homepage": "https://github.com/jdcalvelli/community-utility-twitter-bot#readme",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "plaid": "^10.6.0",
+    "twitter-api-v2": "^1.12.2"
+  }
+}
