@@ -22,7 +22,7 @@ app.post('/api/create-link-token', async (req, res) => {
             client_user_id: 'test123',
         },
         client_name: "Mutual Aid Test",
-        products: ['auth'],
+        products: ['auth', 'transactions'],
         language: 'en',
         country_codes: ['US']
     }
