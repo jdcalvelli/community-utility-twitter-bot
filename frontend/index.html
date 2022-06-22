@@ -1,21 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
 </head>
+
 <body>
     <h1>test example for mutual aid</h1>
     <button id="link-button">press here to start plaid link</button>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
-    
     <script>
+
+        (async function($) {
+            let handler = Plaid.create({
+                token: (await $.post('/api/create-link-token')).link_token,
+                onSuccess: function(public_token, metadata) {
+                    console.log(public_token)
+                    $.post('/api/exchange-public-token', {
+                        public_token: public_token
+                    })
+                }
+            })
+
+            $('#link-button').on('click', function(e) {
+                handler.open()
+            })
+        })(jQuery)
 
     </script>
 
 </body>
+
 </html>
