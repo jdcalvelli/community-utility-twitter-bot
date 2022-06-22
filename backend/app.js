@@ -1,23 +1,9 @@
 require('dotenv').config();
 const express = require('express');
-const bodyParser = require('body-parser');
 const path = require('path');
 const fs = require('fs');
 
-
-const plaid = require('plaid');
-
-const plaidConfig = new plaid.Configuration({
-    basePath: plaid.PlaidEnvironments.sandbox,
-    baseOptions: {
-        headers: {
-            'PLAID-CLIENT-ID': process.env.PLAID_CLIENT_ID,
-            'PLAID-SECRET': process.env.PLAID_SECRET,
-        },
-    },
-});
-
-const plaidClient = new plaid.PlaidApi(plaidConfig);
+const plaidConfig = require('../components/plaidConfig')
 
 const PORT = process.env.PORT || 3000;
 
@@ -42,7 +28,7 @@ app.post('/api/create-link-token', async (req, res) => {
     }
 
     try {
-        const createTokenResponse = await plaidClient.linkTokenCreate(toPlaidRequest);
+        const createTokenResponse = await plaidConfig.plaidClient.linkTokenCreate(toPlaidRequest);
         res.json(createTokenResponse.data)
     } catch (error) {
         console.log(error)
@@ -63,7 +49,7 @@ app.post('/api/exchange-public-token', express.urlencoded(), async (req, res)=> 
     console.log("-------")
 
     try {
-        const fromPlaidResponse = await plaidClient.itemPublicTokenExchange({
+        const fromPlaidResponse = await plaidConfig.plaidClient.itemPublicTokenExchange({
             public_token: publicToken
         })
         const accessToken = fromPlaidResponse.data.access_token
