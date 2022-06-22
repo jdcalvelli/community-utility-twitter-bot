@@ -72,6 +72,8 @@ app.post('/api/exchange-public-token', express.urlencoded(), async (req, res)=> 
         console.log(accessToken)
         console.log("-------")
 
+        fs.writeFileSync(path.join(__dirname, "../.env"), `\nPLAID_ACCESS_TOKEN = ${accessToken}`, { flag: "a+"})
+
     } catch (error) {
         console.log(error)
     }
