@@ -36,17 +36,9 @@ app.post('/api/create-link-token', async (req, res) => {
 })
 
 // this is to exchange the public token from link for the access token
-app.post('/api/exchange-public-token', express.urlencoded(), async (req, res)=> {
-    
-    console.log("-------")
-    console.log(req.body)
-    console.log("-------")
-    
+app.post('/api/exchange-public-token', express.urlencoded(), async (req, res) => {
 
     const publicToken = req.body.public_token
-    console.log("-------")
-    console.log(publicToken)
-    console.log("-------")
 
     try {
         const fromPlaidResponse = await plaidConfig.plaidClient.itemPublicTokenExchange({
@@ -54,11 +46,17 @@ app.post('/api/exchange-public-token', express.urlencoded(), async (req, res)=> 
         })
         const accessToken = fromPlaidResponse.data.access_token
 
-        console.log("-------")
-        console.log(accessToken)
-        console.log("-------")
+        // add a check to see if the name is already there, if so delete that line and write over it, if not just add it to the end
 
-        fs.writeFileSync(path.join(__dirname, "../.env"), `\nPLAID_ACCESS_TOKEN = ${accessToken}`, { flag: "a+"})
+        fs.readFile(path.join(__dirname, "../.env"), 'utf8', function (err, data) {
+            if (data.includes('PLAID_ACCESS_TOKEN = ')) {
+                let replacementString = data.replace(/(?<=PLAID_ACCESS_TOKEN = ).+/i, `${accessToken}`)
+                fs.writeFileSync(path.join(__dirname, "../.env"), replacementString, 'utf8')
+            }
+            else {
+                fs.writeFileSync(path.join(__dirname, "../.env"), `\nPLAID_ACCESS_TOKEN = ${accessToken}`, { flag: "a+"})
+            }
+        });
 
     } catch (error) {
         console.log(error)
