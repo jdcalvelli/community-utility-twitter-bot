@@ -21,7 +21,6 @@
             let handler = Plaid.create({
                 token: (await $.post('/api/create-link-token')).link_token,
                 onSuccess: function(public_token, metadata) {
-                    console.log(public_token)
                     $.post('/api/exchange-public-token', {
                         public_token: public_token
                     })
