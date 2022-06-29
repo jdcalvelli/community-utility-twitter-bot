@@ -4,10 +4,18 @@ const plaidConfig = require("../components/plaidConfig")
 const twitterConfig = require("../components/twitterConfig")
 
 async function getTransactionData(startDateString, endDateString) {
+    
+    let accountData = await plaidConfig.plaidClient.accountsGet({
+        access_token: process.env.PLAID_ACCESS_TOKEN
+    })
+    
     let transactionData = await plaidConfig.plaidClient.transactionsGet({
         access_token: process.env.PLAID_ACCESS_TOKEN,
         start_date: startDateString,
         end_date: endDateString,
+        options: {
+            account_ids: [accountData.data.accounts[0].account_id]
+        }
     })
 
     return transactionData.data
@@ -26,7 +34,7 @@ async function getTransactionData(startDateString, endDateString) {
     // check if transaction data length is greater than zero, if so then tweet if not do not tweet
 
     if (pastDayTransactionData.transactions.length > 0) {
-        let tweetThread = [`Here are CommunityUtility's transactions from ${endDate}`]
+        let tweetThread = [`Here are CommunityUtility's transactions from ${startDate} to ${endDate}`]
 
         for (let i = 0; i < pastDayTransactionData.transactions.length; i++) {
             tweetThread.push({
@@ -44,6 +52,6 @@ async function getTransactionData(startDateString, endDateString) {
         }
     }
     else {
-        console.log(`NO TRANSACTIONS ON ${startDate}`)
+        console.log(`NO TRANSACTIONS DURING ${startDate}`)
     }
 })()
