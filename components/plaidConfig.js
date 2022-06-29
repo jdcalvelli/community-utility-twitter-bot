@@ -1,7 +1,7 @@
 const plaid = require('plaid');
 
 const plaidConfig = new plaid.Configuration({
-    basePath: plaid.PlaidEnvironments.sandbox,
+    basePath: plaid.PlaidEnvironments.development,
     baseOptions: {
         headers: {
             'PLAID-CLIENT-ID': process.env.PLAID_CLIENT_ID,
