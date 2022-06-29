@@ -27,7 +27,7 @@ async function getTransactionData(startDateString, endDateString) {
     // end date is 1 day before current day to capture transactions
     let endDate = `${new Date().getUTCFullYear()}-${new Date().getUTCMonth() + 1 <= 9 ? "0" + (new Date().getUTCMonth() + 1) : new Date().getUTCMonth() + 1}-${new Date().getUTCDate() - 1 <= 9 ? "0" + (new Date().getUTCDate() - 1) : new Date().getUTCDate() - 1}`
 
-    let pastDayTransactionData = await getTransactionData("2022-01-01", "2022-01-02")
+    let pastDayTransactionData = await getTransactionData(startDate, endDate)
 
     // create the tweet thread and then loop through the transaction data and add it to the tweet thread
 
