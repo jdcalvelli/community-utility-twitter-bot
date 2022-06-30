@@ -27,18 +27,18 @@ async function getTransactionData(startDateString, endDateString) {
     // end date is day when cron job gets run - which is saturday at 11:55 pm
     let endDate = `${new Date().getUTCFullYear()}-${new Date().getUTCMonth() + 1 <= 9 ? "0" + (new Date().getUTCMonth() + 1) : new Date().getUTCMonth() + 1}-${new Date().getUTCDate() <= 9 ? "0" + (new Date().getUTCDate()) : new Date().getUTCDate()}`
 
-    let pastDayTransactionData = await getTransactionData(startDate, endDate)
+    let pastWeekTransactionData = await getTransactionData(startDate, endDate)
 
     // create the tweet thread and then loop through the transaction data and add it to the tweet thread
 
     // check if transaction data length is greater than zero, if so then tweet if not do not tweet
 
-    if (pastDayTransactionData.transactions.length > 0) {
-        let tweetThread = [`Here are CommunityUtility's transactions from ${startDate} to ${endDate}`]
+    if (pastWeekTransactionData.transactions.length > 0) {
+        let tweetThread = [`Here are CommunityUtility's transactions from \n${startDate} to ${endDate}`]
 
-        for (let i = 0; i < pastDayTransactionData.transactions.length; i++) {
+        for (let i = 0; i < pastWeekTransactionData.transactions.length; i++) {
             tweetThread.push({
-                text: `Authorized Date: ${pastDayTransactionData.transactions[i].authorized_date}\nPayment Method: ${pastDayTransactionData.transactions[i].payment_meta.payment_method}\nMerchant Name: ${pastDayTransactionData.transactions[i].merchant_name}\nPayment Amount: ${pastDayTransactionData.transactions[i].amount}`
+                text: `Payment Date: ${pastWeekTransactionData.transactions[i].date}\nPayment Categories: ${pastWeekTransactionData.transactions[i].category}\nPayment Name: ${pastWeekTransactionData.transactions[i].name}\nPayment Amount: ${pastWeekTransactionData.transactions[i].amount}`
             })
         }
 
@@ -46,12 +46,12 @@ async function getTransactionData(startDateString, endDateString) {
 
         try {
             twitterConfig.twitterClient.v2.tweetThread(tweetThread)
-            console.log("DAILY TWEET FIRED SUCCESSFULLY")
+            console.log("WEEKLY TWEET FIRED SUCCESSFULLY")
         } catch (error) {
             console.log(error)
         }
     }
     else {
-        console.log(`NO TRANSACTIONS DURING ${startDate}`)
+        console.log(`NO TRANSACTIONS FROM ${startDate} TO ${endDate}`)
     }
 })()
