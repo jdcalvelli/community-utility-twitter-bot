@@ -8,10 +8,6 @@ async function getTransactionData(startDateString, endDateString) {
     let accountData = await plaidConfig.plaidClient.accountsGet({
         access_token: process.env.PLAID_ACCESS_TOKEN
     })
-    
-    plaidConfig.plaidClient.transactionsRefresh({
-        access_token: process.env.PLAID_ACCESS_TOKEN,
-    })
 
     let transactionData = await plaidConfig.plaidClient.transactionsGet({
         access_token: process.env.PLAID_ACCESS_TOKEN,
