@@ -22,10 +22,10 @@ async function getTransactionData(startDateString, endDateString) {
 }
 
 (async function createTweetThread() {
-    // start date is 2 days before current day
-    let startDate = `${new Date().getUTCFullYear()}-${new Date().getUTCMonth() + 1 <= 9 ? "0" + (new Date().getUTCMonth() + 1) : new Date().getUTCMonth() + 1}-${new Date().getUTCDate() - 2 <= 9 ? "0" + (new Date().getUTCDate() - 2) : new Date().getUTCDate() - 2}`
-    // end date is 1 day before current day to capture transactions
-    let endDate = `${new Date().getUTCFullYear()}-${new Date().getUTCMonth() + 1 <= 9 ? "0" + (new Date().getUTCMonth() + 1) : new Date().getUTCMonth() + 1}-${new Date().getUTCDate() - 1 <= 9 ? "0" + (new Date().getUTCDate() - 1) : new Date().getUTCDate() - 1}`
+    // start date is sunday at beginning of the week
+    let startDate = `${new Date().getUTCFullYear()}-${new Date().getUTCMonth() + 1 <= 9 ? "0" + (new Date().getUTCMonth() + 1) : new Date().getUTCMonth() + 1}-${new Date().getUTCDate() - 6 <= 9 ? "0" + (new Date().getUTCDate() - 6) : new Date().getUTCDate() - 6}`
+    // end date is day when cron job gets run - which is saturday at 11:55 pm
+    let endDate = `${new Date().getUTCFullYear()}-${new Date().getUTCMonth() + 1 <= 9 ? "0" + (new Date().getUTCMonth() + 1) : new Date().getUTCMonth() + 1}-${new Date().getUTCDate() <= 9 ? "0" + (new Date().getUTCDate()) : new Date().getUTCDate()}`
 
     let pastDayTransactionData = await getTransactionData(startDate, endDate)
 
