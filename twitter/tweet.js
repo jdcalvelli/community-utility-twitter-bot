@@ -35,7 +35,7 @@ async function getTransactionData(startDateString, endDateString) {
     // check if transaction data length is greater than zero, if so then tweet if not do not tweet
 
     if (pastWeekTransactionData.transactions.length > 0) {
-        let tweetThread = [`Here are CommunityUtility's transactions from \n${startISO} to ${endISO}`]
+        let tweetThread = [`Here are CommunityUtility's transactions from \n${startISO} to ${endISO}:`]
 
         for (let i = 0; i < pastWeekTransactionData.transactions.length; i++) {
             tweetThread.push({
@@ -47,7 +47,7 @@ async function getTransactionData(startDateString, endDateString) {
 
         try {
             twitterConfig.twitterClient.v2.tweetThread(tweetThread)
-            console.log("WEEKLY TWEET FIRED SUCCESSFULLY")
+            console.log(`${startISO} - ${endISO}: WEEKLY TWEET FIRED SUCCESSFULLY`)
         } catch (error) {
             console.log(error)
         }
